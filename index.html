@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Reel Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: a contact-sheet of 9:16 frames, like a row of filmstrip cells, each labelled with a timecode. */
+:root{
+  --bg:#f3f4f6; --surface:#ffffff; --fg:#14171c; --muted:#5b6370; --line:#d9dce2; --accent:#0e8f80; --accent-fg:#ffffff;
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1013;--surface:#171a1f;--fg:#eef0f3;--muted:#98a0ad;--line:#2a2e36;--accent:#2fcdb8;--accent-fg:#06201c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1013;--surface:#171a1f;--fg:#eef0f3;--muted:#98a0ad;--line:#2a2e36;--accent:#2fcdb8;--accent-fg:#06201c;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-block:40px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:14px;max-width:62ch}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,60px);line-height:1.02;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);font-size:18px;max-width:52ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:13px;color:var(--muted);padding:0;margin:4px 0 0;list-style:none}
+.facts li{display:flex;gap:8px;align-items:center}
+.facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:24px 20px;margin:0;padding:0;list-style:none}
+.cell{min-width:0;display:flex;flex-direction:column;gap:12px}
+.frame{aspect-ratio:9/16;max-width:100%;border-radius:10px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.frame video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.meta{display:flex;flex-direction:column;gap:4px}
+.tc{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.cell h2{font-family:var(--display);font-size:19px;line-height:1.2;font-weight:500;margin:0}
+.cell p{margin:0;color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tags span{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--fg)}
+.cta{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:28px}
+.cta h2{font-family:var(--display);font-size:clamp(22px,3.4vw,32px);margin:0;font-weight:500;max-width:24ch;text-wrap:balance}
+.contact{font-family:var(--mono);font-size:15px;background:var(--accent);color:var(--accent-fg);padding:10px 16px;border-radius:8px;text-decoration:none;display:inline-block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Short-form video editor</div>
+    <h1>Talking heads that hold the first three seconds.</h1>
+    <p class="lede">Vertical edits for founders, coaches and podcast hosts: hook, captions, cutaway graphics and sound, ready for Reels, Shorts and TikTok.</p>
+    <ul class="facts">
+      <li>9:16 · 1080×1920</li>
+      <li>Captions and cutaways included</li>
+      <li>English-language content</li>
+    </ul>
+  </header>
+
+  <ul class="grid" id="grid">
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/beforeafter.jpg" src="v/beforeafter.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:25</div>
+        <h2>Before / after</h2>
+        <p>The same talking-head clip, raw on the left and edited on the right.</p>
+        <div class="tags"><span>Captions</span><span>Cutaways</span><span>Pacing</span></div>
+      </div>
+    </li>
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/t3.jpg" src="v/t3.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:44</div>
+        <h2>Tutorial explainer</h2>
+        <p>A three-tip talking head with a progress tracker, serif keyword captions and full-screen graphic cutaways.</p>
+        <div class="tags"><span>Cutaway graphics</span><span>Animated captions</span><span>Sound design</span></div>
+      </div>
+    </li>
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/r6.jpg" src="v/r6.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:29</div>
+        <h2>Talking head with 3D cutaways</h2>
+        <p>Keyword captions and clean 3D scenes that illustrate each point as it is spoken.</p>
+        <div class="tags"><span>Captions</span><span>3D cutaways</span><span>Sound design</span></div>
+      </div>
+    </li>
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/r4.jpg" src="v/r4.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:32</div>
+        <h2>Podcast-style explainer</h2>
+        <p>Word-by-word captions on a studio shot, with object cutaways to land each idea.</p>
+        <div class="tags"><span>Word captions</span><span>Cutaways</span></div>
+      </div>
+    </li>
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/r3.jpg" src="v/r3.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:43</div>
+        <h2>Kinetic-title hook</h2>
+        <p>An animated title opens the video, then business advice cut tight with split-screen comparisons.</p>
+        <div class="tags"><span>Title hook</span><span>Split screen</span><span>Motion</span></div>
+      </div>
+    </li>
+    <li class="cell">
+      <div class="frame"><video controls playsinline preload="none" poster="v/r5.jpg" src="v/r5.mp4"></video></div>
+      <div class="meta">
+        <div class="tc">00:31</div>
+        <h2>Dark-studio founder clip</h2>
+        <p>Low-key lighting, highlighted keywords and quick emphasis on the punchlines.</p>
+        <div class="tags"><span>Highlighted captions</span><span>Emphasis cuts</span></div>
+      </div>
+    </li>
+  </ul>
+
+  <section class="cta">
+    <h2>Send one long video and get back a clip you can post.</h2>
+    <a class="contact" id="contact" href="https://www.instagram.com/artemkn.motion/" target="_blank" rel="noopener">Instagram · @artemkn.motion</a>
+  </section>
+</div>
+
+<script>
+  // One video plays at a time.
+  var vids = document.querySelectorAll('#grid video');
+  vids.forEach(function (v) {
+    v.addEventListener('play', function () {
+      vids.forEach(function (o) { if (o !== v) o.pause(); });
+    });
+  });
+</script>
+
+</body>
+</html>
