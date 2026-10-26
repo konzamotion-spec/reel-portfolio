@@ -3,136 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Reel Portfolio</title>
+<title>Artem Reels</title>
+<meta name="description" content="Short-form video editor. Vertical edits for founders, coaches and podcast hosts.">
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,800&display=swap">
 <style>
-:root{color-scheme:light}
-body{margin:0}
-img{max-width:100%}
-[hidden]{display:none!important}
-/* Layout: a contact-sheet of 9:16 frames, like a row of filmstrip cells, each labelled with a timecode. */
+/* Layout: the page is one of Artem's reels on paper. Caption-style headline (small Inter lead + big Playfair accent),
+   a three-object hero (centre reel, two smaller reels tilted behind), then each reel lying on a numbered paper sheet. */
 :root{
-  --bg:#f3f4f6; --surface:#ffffff; --fg:#14171c; --muted:#5b6370; --line:#d9dce2; --accent:#0e8f80; --accent-fg:#ffffff;
-  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
-  --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+  --paper:#F4F2EF;      /* takeover paper from his reels */
+  --sheet:#FBFAF7;      /* a loose sheet lying on the paper */
+  --ink:#1C1C1C;        /* caption ink on paper */
+  --muted:#69645C;      /* warm grey, never pure grey */
+  --rule:#E3DED5;       /* grid lines */
+  --accent:#A85A14;     /* amber, the accent of his "DM me for edit" */
+  --caption:"Inter","Helvetica Neue",Arial,sans-serif;
+  --accent-face:"Playfair Display","DM Serif Display",Georgia,serif;
+  --land:cubic-bezier(.12,.86,.22,1);   /* his zoom curve: sharp start, long landing */
+  --shadow:0 30px 60px -18px rgba(40,30,15,.28),0 8px 18px -8px rgba(40,30,15,.18);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1013;--surface:#171a1f;--fg:#eef0f3;--muted:#98a0ad;--line:#2a2e36;--accent:#2fcdb8;--accent-fg:#06201c;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e1013;--surface:#171a1f;--fg:#eef0f3;--muted:#98a0ad;--line:#2a2e36;--accent:#2fcdb8;--accent-fg:#06201c;color-scheme:dark}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
-  padding-block:40px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
-header{display:flex;flex-direction:column;gap:14px;max-width:62ch}
-.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,60px);line-height:1.02;letter-spacing:-.02em;margin:0;text-wrap:balance}
-.lede{margin:0;color:var(--muted);font-size:18px;max-width:52ch}
-.facts{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:13px;color:var(--muted);padding:0;margin:4px 0 0;list-style:none}
-.facts li{display:flex;gap:8px;align-items:center}
-.facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:24px 20px;margin:0;padding:0;list-style:none}
-.cell{min-width:0;display:flex;flex-direction:column;gap:12px}
-.frame{aspect-ratio:9/16;max-width:100%;border-radius:10px;overflow:hidden;background:#000;border:1px solid var(--line)}
-.frame video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-.meta{display:flex;flex-direction:column;gap:4px}
-.tc{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
-.cell h2{font-family:var(--display);font-size:19px;line-height:1.2;font-weight:500;margin:0}
-.cell p{margin:0;color:var(--muted);font-size:14px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-.tags span{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--fg)}
-.cta{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:28px}
-.cta h2{font-family:var(--display);font-size:clamp(22px,3.4vw,32px);margin:0;font-weight:500;max-width:24ch;text-wrap:balance}
-.contact{font-family:var(--mono);font-size:15px;background:var(--accent);color:var(--accent-fg);padding:10px 16px;border-radius:8px;text-decoration:none;display:inline-block}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--caption);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%}
+[hidden]{display:none!important}
+
+/* paper: faint 56px grid + raster grain */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    url("img/paper.png"),
+    linear-gradient(to right,var(--rule) 1px,transparent 1px) 0 0/56px 56px,
+    linear-gradient(to bottom,var(--rule) 1px,transparent 1px) 0 0/56px 56px;
+  opacity:.55}
+.page{position:relative;z-index:1;max-width:1180px;margin:0 auto;overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+
+/* top line */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px}
+.name{font-weight:600;letter-spacing:-.01em}
+.top a{font-weight:500;text-decoration:none;color:var(--muted)}
+.top a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding-block:28px 72px}
+.cap{margin:0;font-weight:500;letter-spacing:-.02em}
+.cap .lead{display:block;font-size:clamp(26px,3.6vw,46px);line-height:1.12}
+.cap .big{display:block;font-family:var(--accent-face);font-style:italic;font-weight:800;color:var(--accent);
+  font-size:clamp(68px,10.4vw,138px);line-height:.95;letter-spacing:-.02em;margin-top:.08em}
+.w{display:inline-block;white-space:pre}
+.ready .w{animation:pop .62s var(--land) both;animation-delay:calc(var(--i) * 66ms + 120ms)}
+.ready .big .w{animation-duration:.8s;animation-delay:calc(var(--i) * 66ms + 260ms)}
+@keyframes pop{from{opacity:0;filter:blur(12px);transform:translateY(.18em) scale(.9)}to{opacity:1;filter:none;transform:none}}
+.intro{max-width:46ch;color:var(--muted);font-size:18px;margin:28px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);text-decoration:none;
+  font-weight:500;padding:14px 22px;border-radius:999px;transition:transform .5s var(--land)}
+.btn:hover{transform:translateY(-2px)}
+.link{font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
+
+/* three objects: centre reel, two smaller tilted behind */
+.stage{position:relative;height:clamp(440px,52vw,640px)}
+.reel{position:absolute;aspect-ratio:9/16;border-radius:26px;overflow:hidden;background:#2a2622;box-shadow:var(--shadow)}
+.reel video{width:100%;height:100%;object-fit:cover;display:block}
+.stage .c{height:100%;left:50%;top:0;transform:translateX(-50%);z-index:2}
+.stage .l,.stage .r{height:74%;top:13%;z-index:1;filter:saturate(.9)}
+.stage .l{left:2%;transform:rotate(-7deg)}
+.stage .r{right:2%;transform:rotate(7deg)}
+.ready .stage .c{animation:land 1s var(--land) both .1s}
+.ready .stage .l{animation:landL 1.1s var(--land) both .35s}
+.ready .stage .r{animation:landR 1.1s var(--land) both .45s}
+@keyframes land{from{opacity:0;transform:translateX(-50%) translateY(40px) scale(.94)}}
+@keyframes landL{from{opacity:0;transform:translateX(60px) rotate(0deg) scale(.9)}}
+@keyframes landR{from{opacity:0;transform:translateX(-60px) rotate(0deg) scale(.9)}}
+
+/* section heading in caption form */
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:24px 0 8px}
+.head .lead{font-size:clamp(22px,2.6vw,32px);font-weight:500;letter-spacing:-.02em}
+.head .big{font-family:var(--accent-face);font-style:italic;font-weight:800;color:var(--accent);font-size:clamp(46px,6vw,80px);line-height:1}
+.note{color:var(--muted);margin:0 0 40px;max-width:52ch}
+
+/* each reel lies on a numbered sheet */
+.work{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:72px 56px}
+.item{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:end;min-width:0}
+.plate{position:relative;width:clamp(230px,22vw,270px);padding:0 0 0 40px;margin-top:104px}
+.sheet{position:absolute;left:0;top:-104px;width:64%;aspect-ratio:3/4;background:var(--sheet);
+  box-shadow:0 14px 30px -14px rgba(40,30,15,.3);transform:rotate(-3deg);border-radius:4px;
+  display:flex;align-items:flex-start;justify-content:flex-start;padding:2px 0 0 16px}
+.item:nth-child(even) .sheet{transform:rotate(2.5deg)}
+.num{font-family:var(--accent-face);font-style:italic;font-weight:800;font-size:clamp(96px,10vw,132px);line-height:1;color:var(--ink)}
+.plate .reel{position:relative;width:100%;z-index:1}
+.sound{position:absolute;z-index:2;left:12px;bottom:12px;border:0;cursor:pointer;font:500 13px/1 var(--caption);
+  padding:9px 13px;border-radius:999px;background:var(--sheet);color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.sound[aria-pressed="true"]{background:var(--accent);color:var(--sheet)}
+.meta{min-width:0;padding-bottom:6px}
+.meta h3{margin:0 0 8px;font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+.meta p{margin:0;color:var(--muted);font-size:15.5px}
+.meta .len{display:block;margin-top:12px;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* how I edit */
+.how{margin-top:120px;display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:22px;counter-reset:r}
+.rules li{font-size:clamp(19px,2vw,24px);line-height:1.35;letter-spacing:-.015em;font-weight:500;max-width:34ch}
+.rules li span{display:block;color:var(--muted);font-size:16px;font-weight:400;letter-spacing:0;margin-top:4px}
+
+/* call to action: the end card of his before/after reel */
+.end{margin-top:140px;padding-block:80px 40px;text-align:center}
+.end .lead{font-size:clamp(28px,4vw,48px);font-weight:500;letter-spacing:-.02em}
+.end a.dm{display:inline-block;text-decoration:none;color:var(--ink)}
+.end .edit{font-family:var(--accent-face);font-style:italic;font-weight:800;color:var(--accent);
+  font-size:clamp(84px,13vw,170px);line-height:1;position:relative;display:inline-block;padding:0 .08em}
+.end .edit::after{content:"";position:absolute;left:.1em;right:.06em;bottom:.02em;height:.07em;border-radius:99px;background:var(--accent);
+  transform-origin:left;transform:scaleX(0);transition:transform 1.1s var(--land)}
+.end.on .edit::after{transform:scaleX(1)}
+.handle{margin-top:24px;color:var(--muted)}
+.handle b{color:var(--ink);font-weight:600;user-select:all}
+footer{padding-block:40px 32px;color:var(--muted);font-size:14px;text-align:center}
+
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr;gap:28px;padding-bottom:40px}
+  .stage{height:clamp(420px,118vw,560px)}
+  .work{grid-template-columns:1fr;gap:64px}
+  .how{grid-template-columns:1fr;margin-top:96px}
+}
+@media (max-width:520px){
+  .item{grid-template-columns:1fr;gap:18px}
+  .plate{width:min(78vw,300px);margin:104px auto 0}
+  .meta{padding-left:46px}
+  .stage .l{left:-6%}.stage .r{right:-6%}
+}
+@media (prefers-reduced-motion:reduce){
+  .ready .w,.ready .stage .reel{animation:none}
+  .end .edit::after{transition:none}
+  .btn{transition:none}
+}
 </style>
 </head>
 <body>
+<div class="page">
+  <div class="top">
+    <span class="name">Artem</span>
+    <a href="https://www.instagram.com/artemkn.motion/" target="_blank" rel="noopener">@artemkn.motion</a>
+  </div>
 
-
-<div class="wrap">
-  <header>
-    <div class="kicker">Short-form video editor</div>
-    <h1>Talking heads that hold the first three seconds.</h1>
-    <p class="lede">Vertical edits for founders, coaches and podcast hosts: hook, captions, cutaway graphics and sound, ready for Reels, Shorts and TikTok.</p>
-    <ul class="facts">
-      <li>9:16 · 1080×1920</li>
-      <li>Captions and cutaways included</li>
-      <li>English-language content</li>
-    </ul>
-  </header>
-
-  <ul class="grid" id="grid">
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/beforeafter.jpg" src="v/beforeafter.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:25</div>
-        <h2>Before / after</h2>
-        <p>The same talking-head clip, raw on the left and edited on the right.</p>
-        <div class="tags"><span>Captions</span><span>Cutaways</span><span>Pacing</span></div>
+  <section class="hero">
+    <div>
+      <h1 class="cap" id="cap">
+        <span class="lead" data-split>I cut long talking heads into clips people</span>
+        <span class="big" data-split>finish.</span>
+      </h1>
+      <p class="intro">Vertical edits for founders, coaches and podcast hosts. Hook, captions, cutaways and sound, ready for Reels, Shorts and TikTok.</p>
+      <div class="actions">
+        <a class="btn" href="#work">Watch the reels</a>
+        <a class="link" href="https://www.instagram.com/artemkn.motion/" target="_blank" rel="noopener">Message me on Instagram</a>
       </div>
-    </li>
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/t3.jpg" src="v/t3.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:44</div>
-        <h2>Tutorial explainer</h2>
-        <p>A three-tip talking head with a progress tracker, serif keyword captions and full-screen graphic cutaways.</p>
-        <div class="tags"><span>Cutaway graphics</span><span>Animated captions</span><span>Sound design</span></div>
-      </div>
-    </li>
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/r6.jpg" src="v/r6.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:29</div>
-        <h2>Talking head with 3D cutaways</h2>
-        <p>Keyword captions and clean 3D scenes that illustrate each point as it is spoken.</p>
-        <div class="tags"><span>Captions</span><span>3D cutaways</span><span>Sound design</span></div>
-      </div>
-    </li>
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/r4.jpg" src="v/r4.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:32</div>
-        <h2>Podcast-style explainer</h2>
-        <p>Word-by-word captions on a studio shot, with object cutaways to land each idea.</p>
-        <div class="tags"><span>Word captions</span><span>Cutaways</span></div>
-      </div>
-    </li>
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/r3.jpg" src="v/r3.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:43</div>
-        <h2>Kinetic-title hook</h2>
-        <p>An animated title opens the video, then business advice cut tight with split-screen comparisons.</p>
-        <div class="tags"><span>Title hook</span><span>Split screen</span><span>Motion</span></div>
-      </div>
-    </li>
-    <li class="cell">
-      <div class="frame"><video controls playsinline preload="none" poster="v/r5.jpg" src="v/r5.mp4"></video></div>
-      <div class="meta">
-        <div class="tc">00:31</div>
-        <h2>Dark-studio founder clip</h2>
-        <p>Low-key lighting, highlighted keywords and quick emphasis on the punchlines.</p>
-        <div class="tags"><span>Highlighted captions</span><span>Emphasis cuts</span></div>
-      </div>
-    </li>
-  </ul>
-
-  <section class="cta">
-    <h2>Send one long video and get back a clip you can post.</h2>
-    <a class="contact" id="contact" href="https://www.instagram.com/artemkn.motion/" target="_blank" rel="noopener">Instagram · @artemkn.motion</a>
+    </div>
+    <div class="stage" aria-label="Three of my edits playing">
+      <div class="reel l"><video muted loop playsinline preload="metadata" poster="v/r4.jpg" src="v/r4.mp4" data-auto></video></div>
+      <div class="reel r"><video muted loop playsinline preload="metadata" poster="v/r6.jpg" src="v/r6.mp4" data-auto></video></div>
+      <div class="reel c"><video muted loop playsinline preload="metadata" poster="v/t3.jpg" src="v/t3.mp4" data-auto></video></div>
+    </div>
   </section>
+
+  <section id="work">
+    <h2 class="head"><span class="lead">Six recent</span><span class="big">edits</span></h2>
+    <p class="note">They play silently as you scroll. Tap Sound to hear one.</p>
+    <ol class="work" id="work-list">
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">1</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/beforeafter.jpg" src="v/beforeafter.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Before and after</h3><p>The same raw take next to the finished cut, so you can see exactly what the edit adds.</p><span class="len">0:25, vertical 9:16</span></div>
+      </li>
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">2</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/t3.jpg" src="v/t3.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Three-tip tutorial</h3><p>A progress tracker for each tip, keyword captions and full-screen graphics on paper between takes.</p><span class="len">0:44, vertical 9:16</span></div>
+      </li>
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">3</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/r6.jpg" src="v/r6.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Talking head with 3D cutaways</h3><p>Clean 3D scenes illustrate each point the moment it is said, then hand back to the speaker.</p><span class="len">0:29, vertical 9:16</span></div>
+      </li>
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">4</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/r4.jpg" src="v/r4.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Podcast-style explainer</h3><p>Word-by-word captions on a studio shot, with object cutaways to land each idea.</p><span class="len">0:32, vertical 9:16</span></div>
+      </li>
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">5</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/r3.jpg" src="v/r3.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Kinetic title hook</h3><p>An animated title grabs the first second, then business advice cut tight with split-screen comparisons.</p><span class="len">0:43, vertical 9:16</span></div>
+      </li>
+      <li class="item">
+        <div class="plate"><div class="sheet"><span class="num">6</span></div>
+          <div class="reel"><video loop playsinline muted preload="none" poster="v/r5.jpg" src="v/r5.mp4" data-auto></video><button class="sound" type="button" aria-pressed="false">Sound</button></div></div>
+        <div class="meta"><h3>Dark-studio founder clip</h3><p>Low-key light, highlighted keywords and quick emphasis on every punchline.</p><span class="len">0:31, vertical 9:16</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="how">
+    <h2 class="head"><span class="lead">How I</span><span class="big">cut</span></h2>
+    <ul class="rules">
+      <li>Dead air, retakes and filler go first.<span>The speech stays natural, just tighter.</span></li>
+      <li>Captions land word by word, one accent per line.<span>Readable in half a second, even with the sound off.</span></li>
+      <li>Graphics take the full screen or sit above the speaker.<span>Nothing covers the face.</span></li>
+      <li>Every visual change gets a sound.<span>Whooshes, hits and textures mixed under the voice.</span></li>
+    </ul>
+  </section>
+
+  <section class="end" id="end">
+    <a class="dm" href="https://www.instagram.com/artemkn.motion/" target="_blank" rel="noopener">
+      <span class="lead">DM me for</span><br><span class="edit">edit</span>
+    </a>
+    <p class="handle">Instagram <b>@artemkn.motion</b>. Send one long video and get back a clip you can post.</p>
+  </section>
+
+  <footer>Artem, short-form video editor</footer>
 </div>
 
 <script>
-  // One video plays at a time.
-  var vids = document.querySelectorAll('#grid video');
-  vids.forEach(function (v) {
-    v.addEventListener('play', function () {
-      vids.forEach(function (o) { if (o !== v) o.pause(); });
-    });
+(function(){
+  // split caption lines into words for the pop-in
+  var i=0;
+  document.querySelectorAll('[data-split]').forEach(function(el){
+    var words=el.textContent.trim().split(/\s+/);el.textContent='';
+    words.forEach(function(w,k){var s=document.createElement('span');s.className='w';s.style.setProperty('--i',i++);
+      s.textContent=w+(k<words.length-1?' ':'');el.appendChild(s);});
   });
-</script>
+  requestAnimationFrame(function(){document.documentElement.classList.add('ready')});
 
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var vids=[].slice.call(document.querySelectorAll('video[data-auto]'));
+  function safePlay(v){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+
+  // play only what is on screen
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      var v=e.target;
+      if(e.isIntersecting){if(!reduce||!v.muted)safePlay(v);}
+      else{v.pause();}
+    });},{threshold:.45});
+    vids.forEach(function(v){io.observe(v)});
+  }else if(!reduce){vids.forEach(safePlay);}
+
+  // one video with sound at a time
+  var buttons=[].slice.call(document.querySelectorAll('.sound'));
+  function setSound(btn,on){btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'Sound on':'Sound';}
+  buttons.forEach(function(btn){
+    var v=btn.parentElement.querySelector('video');
+    function toggle(){
+      var on=v.muted;
+      vids.forEach(function(o){o.muted=true});buttons.forEach(function(b){setSound(b,false)});
+      if(on){v.muted=false;v.currentTime=0;safePlay(v);setSound(btn,true);}
+    }
+    btn.addEventListener('click',toggle);
+    v.addEventListener('click',toggle);
+  });
+
+  // underline under "edit" draws when the end card is reached
+  var end=document.getElementById('end');
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es,o){if(es[0].isIntersecting){end.classList.add('on');o.disconnect();}},{threshold:.5}).observe(end);
+  }else{end.classList.add('on');}
+})();
+</script>
 </body>
 </html>
